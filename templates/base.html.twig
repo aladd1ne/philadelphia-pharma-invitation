@@ -23,874 +23,128 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Invitation — JCM Nord Ouest</title>
+    <title>Invitation Hero Section</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #08152f;
-            --bg-2: #0d1f49;
-            --panel: rgba(16, 34, 79, 0.78);
-            --panel-strong: rgba(19, 47, 109, 0.92);
-            --line: rgba(255, 255, 255, 0.10);
-            --text: #ffffff;
-            --muted: rgba(255, 255, 255, 0.76);
-            --cyan: #1ba8ec;
-            --cyan-soft: #71d0ff;
-            --shadow: 0 24px 80px rgba(3, 10, 27, 0.38);
-            --radius-xl: 28px;
-            --radius-lg: 22px;
-            --radius-md: 16px;
-            --max: 1240px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            color: var(--text);
-            background:
-                    radial-gradient(circle at 15% 15%, rgba(34, 193, 255, 0.16), transparent 22%),
-                    radial-gradient(circle at 85% 10%, rgba(255, 137, 50, 0.12), transparent 22%),
-                    linear-gradient(180deg, #07122a 0%, #0b1a3d 34%, #09162f 100%);
-            overflow-x: hidden;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        .page {
-            position: relative;
-            min-height: 100vh;
-            isolation: isolate;
-        }
-
-        #bg-canvas {
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -5;
-            pointer-events: none;
-            opacity: 0.8;
-        }
-
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 28px;
-        }
-
-        .hero__image {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center center;
-            transform: scale(1.045);
-            filter: saturate(1.04) contrast(1.03) brightness(0.82);
-            z-index: -4;
-            transition: transform 0.2s ease-out;
-        }
-
-        .hero__overlay {
-            position: absolute;
-            inset: 0;
-            background:
-                    linear-gradient(180deg, rgba(7, 16, 39, 0.08) 0%, rgba(8, 22, 54, 0.14) 28%, rgba(8, 19, 46, 0.42) 72%, rgba(6, 14, 34, 0.80) 100%);
-            z-index: -3;
-        }
-
-        .hero__glow {
-            position: absolute;
-            inset: 0;
-            background:
-                    radial-gradient(circle at 18% 28%, rgba(45, 213, 255, 0.14), transparent 24%),
-                    radial-gradient(circle at 82% 25%, rgba(255, 138, 69, 0.12), transparent 22%),
-                    radial-gradient(circle at 50% 72%, rgba(27, 168, 236, 0.10), transparent 20%);
-            z-index: -2;
-            pointer-events: none;
-        }
-
-        .hero__inner,
-        .section__inner {
-            width: min(var(--max), 100%);
-            margin: 0 auto;
-        }
-
-        .hero__grid {
-            display: grid;
-            grid-template-columns: 120px 1fr;
-            gap: 26px;
-            align-items: center;
-        }
-
-        .hero__side {
-            display: flex;
-            justify-content: center;
-            align-self: stretch;
-            padding-top: 12px;
-        }
-
-        .hero__side span {
-            writing-mode: vertical-rl;
-            transform: rotate(180deg);
-            font-size: clamp(2rem, 4vw, 4.9rem);
-            line-height: 1;
-            font-weight: 900;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: #fff;
-            text-shadow: 4px 0 0 rgba(236, 177, 25, 0.5), 0 14px 28px rgba(7, 17, 43, 0.25);
-            user-select: none;
-        }
-
-        .hero__main {
-            display: grid;
-            gap: 24px;
-            align-items: center;
-            justify-items: center;
-        }
-
-        .glass {
-            position: relative;
-            background: linear-gradient(180deg, rgba(23, 49, 112, 0.88), rgba(18, 40, 96, 0.78));
-            border: 1px solid rgba(255, 255, 255, 0.09);
-            backdrop-filter: blur(9px);
-            -webkit-backdrop-filter: blur(9px);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-        }
-
-        .glass::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent 40%, rgba(255,255,255,0.03));
-            pointer-events: none;
-        }
-
-        .hero__title {
-            width: min(760px, 100%);
-            text-align: center;
-            padding: 36px 42px 30px;
-            border-radius: var(--radius-xl);
-            animation: fadeUp 0.8s ease both;
-        }
-
-        .hero__title-top {
-            display: block;
-            color: var(--cyan);
-            font-size: clamp(3.2rem, 7vw, 6.4rem);
-            line-height: 0.95;
-            font-weight: 900;
-            letter-spacing: 0.02em;
-            text-transform: uppercase;
-        }
-
-        .hero__title-bottom {
-            display: block;
-            margin-top: 10px;
-            font-size: clamp(2rem, 5vw, 4.4rem);
-            line-height: 0.96;
-            font-weight: 400;
-            letter-spacing: 0.02em;
-            text-transform: uppercase;
-        }
-
-        .hero__date {
-            width: min(730px, calc(100% - 90px));
-            text-align: center;
-            border-radius: 20px;
-            background: linear-gradient(90deg, #19a9ee, #169cdf);
-            border: 1px solid rgba(255,255,255,0.10);
-            box-shadow: 0 18px 54px rgba(17, 127, 189, 0.30);
-            padding: 18px 26px 16px;
-            animation: fadeUp 0.8s ease 0.1s both;
-        }
-
-        .hero__date strong {
-            display: block;
-            font-size: clamp(2.1rem, 4.8vw, 4.6rem);
-            line-height: 1;
-            font-weight: 400;
-        }
-
-        .hero__date span {
-            display: block;
-            margin-top: 8px;
-            font-size: clamp(1rem, 1.8vw, 1.7rem);
-            font-weight: 800;
-            letter-spacing: 0.02em;
-        }
-
-        .hero__logos {
-            width: min(720px, 100%);
-            border-radius: var(--radius-lg);
-            padding: 26px 30px;
-            animation: fadeUp 0.8s ease 0.2s both;
-        }
-
-        .hero__logos-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 20px 28px;
-            align-items: center;
-            justify-items: center;
-        }
-
-        .brand {
-            text-align: center;
-            min-height: 60px;
-            display: grid;
-            place-items: center;
-            width: 100%;
-        }
-
-        .brand strong {
-            display: block;
-            font-size: clamp(1.6rem, 2.2vw, 2.8rem);
-            line-height: 1;
-            font-weight: 800;
-            white-space: nowrap;
-        }
-
-        .brand small {
-            display: block;
-            margin-top: 6px;
-            font-size: 0.78rem;
-            font-weight: 500;
-            opacity: 0.88;
-        }
-
-        .brand--script strong {
-            font-family: cursive;
-            font-weight: 700;
-            letter-spacing: 0;
-        }
-
-        .hero__cta-row {
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-            justify-content: center;
-            animation: fadeUp 0.8s ease 0.3s both;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 180px;
-            padding: 15px 24px;
-            border-radius: 999px;
-            font-size: 0.98rem;
-            font-weight: 800;
-            letter-spacing: 0.02em;
-            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
-            border: 1px solid transparent;
-        }
-
-        .btn--primary {
-            background: linear-gradient(90deg, #1aa9ec, #1298db);
-            color: #fff;
-            box-shadow: 0 18px 34px rgba(20, 122, 181, 0.28);
-        }
-
-        .btn--primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 22px 40px rgba(20, 122, 181, 0.34);
-        }
-
-        .btn--ghost {
-            background: rgba(255,255,255,0.06);
-            border-color: rgba(255,255,255,0.12);
-            color: #fff;
-        }
-
-        .btn--ghost:hover {
-            transform: translateY(-2px);
-            background: rgba(255,255,255,0.10);
-        }
-
-        .section {
-            position: relative;
-            padding: 44px 28px 90px;
-        }
-
-        .section__inner {
-            display: grid;
-            gap: 26px;
-        }
-
-        .intro-card {
-            border-radius: var(--radius-xl);
-            padding: 30px 32px;
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 24px;
-            align-items: center;
-        }
-
-        .eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 14px;
-            color: var(--cyan-soft);
-            font-size: 0.88rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-        }
-
-        .eyebrow::before {
-            content: "";
-            width: 36px;
-            height: 1px;
-            background: rgba(113, 208, 255, 0.8);
-        }
-
-        h2 {
-            font-size: clamp(1.8rem, 3vw, 3.2rem);
-            line-height: 1.05;
-            margin-bottom: 12px;
-        }
-
-        .intro-card p,
-        .timeline__card p,
-        .speaker-card p,
-        .footer-card p {
-            color: var(--muted);
-            line-height: 1.7;
-            font-size: 1rem;
-        }
-
-        .meta-grid {
-            display: grid;
-            gap: 14px;
-        }
-
-        .meta-item {
-            border-radius: 18px;
-            padding: 18px 18px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-
-        .meta-item span {
-            display: block;
-            color: var(--cyan-soft);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-
-        .meta-item strong {
-            display: block;
-            line-height: 1.45;
-            font-size: 1rem;
-        }
-
-        .timeline {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            align-items: start;
-        }
-
-        .timeline__card,
-        .speakers,
-        .footer-card {
-            border-radius: var(--radius-xl);
-            padding: 28px;
-        }
-
-        .timeline-list {
-            display: grid;
-            gap: 16px;
-            margin-top: 22px;
-        }
-
-        .timeline-item {
-            display: grid;
-            grid-template-columns: 96px 1fr;
-            gap: 14px;
-            padding: 16px 0;
-            border-top: 1px solid rgba(255,255,255,0.09);
-        }
-
-        .timeline-item:first-child {
-            border-top: 0;
-            padding-top: 0;
-        }
-
-        .timeline-time {
-            color: var(--cyan-soft);
-            font-weight: 800;
-            font-size: 1rem;
-            letter-spacing: 0.02em;
-        }
-
-        .timeline-content strong {
-            display: block;
-            margin-bottom: 6px;
-            font-size: 1rem;
-            line-height: 1.4;
-        }
-
-        .timeline-content em {
-            font-style: normal;
-            color: var(--cyan-soft);
-            font-weight: 700;
-        }
-
-        .speaker-list {
-            display: grid;
-            gap: 16px;
-            margin-top: 20px;
-        }
-
-        .speaker-card {
-            border-radius: 18px;
-            padding: 18px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-
-        .speaker-card strong {
-            display: block;
-            font-size: 1rem;
-            margin-bottom: 6px;
-            color: #fff;
-        }
-
-        .speaker-role {
-            display: block;
-            margin-bottom: 10px;
-            color: var(--cyan-soft);
-            font-size: 0.82rem;
-            font-weight: 800;
-            letter-spacing: 0.10em;
-            text-transform: uppercase;
-        }
-
-        .footer-card {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .sponsor-row {
-            display: flex;
-            gap: 14px 22px;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-            align-items: center;
-        }
-
-        .sponsor-row span {
-            font-weight: 800;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.94);
-        }
-
-        .sponsor-row .script {
-            font-family: cursive;
-            text-transform: none;
-            font-weight: 700;
-        }
-
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .reveal.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(26px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 980px) {
-            .hero__grid {
-                grid-template-columns: 1fr;
-            }
-
-            .hero__side {
-                justify-content: flex-start;
-                padding-bottom: 8px;
-            }
-
-            .hero__side span {
-                writing-mode: initial;
-                transform: none;
-                font-size: 1.4rem;
-            }
-
-            .intro-card,
-            .timeline,
-            .footer-card {
-                grid-template-columns: 1fr;
-            }
-
-            .sponsor-row {
-                justify-content: flex-start;
-            }
-        }
-
-        @media (max-width: 720px) {
-            .hero {
-                padding: 16px 12px 22px;
-            }
-
-            .section {
-                padding: 26px 12px 70px;
-            }
-
-            .hero__title,
-            .hero__logos,
-            .intro-card,
-            .timeline__card,
-            .speakers,
-            .footer-card {
-                padding-left: 18px;
-                padding-right: 18px;
-            }
-
-            .hero__date {
-                width: 100%;
-            }
-
-            .hero__logos-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .brand strong {
-                white-space: normal;
-            }
-
-            .timeline-item {
-                grid-template-columns: 1fr;
-                gap: 6px;
-            }
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
 </head>
 <body>
-<div class="page">
-    <canvas id="bg-canvas"></canvas>
-
-    <section class="hero" id="top">
-        <img class="hero__image" id="heroImage" src="assets/images/doctors.png" alt="JCM Nord Ouest invitation">
-        <div class="hero__overlay"></div>
-        <div class="hero__glow"></div>
-
-        <div class="hero__inner">
-            <div class="hero__grid">
-                <div class="hero__side">
-                    <span>Invitation</span>
-                </div>
-
-                <div class="hero__main">
-                    <div class="hero__title glass">
-                        <span class="hero__title-top">JCM</span>
-                        <span class="hero__title-bottom">Nord Ouest</span>
-                    </div>
-
-                    <div class="hero__date">
-                        <strong>25 Avril 2026</strong>
-                        <span>Hôtel La Forêt, AIN DRAHEM</span>
-                    </div>
-
-                    <div class="hero__logos glass">
-                        <div class="hero__logos-grid">
-                            <div class="brand">
-                                <div>
-                                    <strong>inovia</strong>
-                                    <small>Dapagliflozine 5 mg, 10 mg</small>
-                                </div>
-                            </div>
-                            <div class="brand">
-                                <div>
-                                    <strong>VILDA MET</strong>
-                                    <small>Vildagliptine 50 mg + Metformine 1000 mg</small>
-                                </div>
-                            </div>
-                            <div class="brand brand--script">
-                                <div>
-                                    <strong>DuoFor</strong>
-                                    <small>Valsartan + Amlodipine</small>
-                                </div>
-                            </div>
-                            <div class="brand">
-                                <div>
-                                    <strong>ARAVEN - IC</strong>
-                                    <small>Irbesartan + Amlodipine</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="hero__cta-row">
-                        <a href="#programme" class="btn btn--primary">Voir le programme</a>
-                        <a href="#details" class="btn btn--ghost">Informations</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section" id="details">
-        <div class="section__inner">
-            <div class="intro-card glass reveal">
-                <div>
-                    <span class="eyebrow">Événement</span>
-                    <h2>Une invitation premium, claire et professionnelle</h2>
-                    <p>
-                        Les Laboratoires PHILADELPHIA PHARMA ont le plaisir de vous inviter à la 5ème édition de leur Journée Cardio-Métabolique du Cap-Bon. Cette page reprend l’esprit de l’invitation d’origine avec une présentation plus élégante, plus lisible et plus actuelle.
-                    </p>
-                </div>
-
-                <div class="meta-grid">
-                    <div class="meta-item">
-                        <span>Date</span>
-                        <strong>Samedi 25 Avril 2026</strong>
-                    </div>
-                    <div class="meta-item">
-                        <span>Lieu</span>
-                        <strong>Hôtel La Forêt, Ain Drahem</strong>
-                    </div>
-                    <div class="meta-item">
-                        <span>Format</span>
-                        <strong>Rencontres, échanges scientifiques et dîner gala</strong>
-                    </div>
-                </div>
-            </div>
-
-            <div class="timeline" id="programme">
-                <div class="timeline__card glass reveal">
-                    <span class="eyebrow">Programme</span>
-                    <h2>Doctor’s Battle</h2>
-                    <p>Le déroulé de la soirée, présenté dans une structure plus lisible et adaptée à une landing page.</p>
-
-                    <div class="timeline-list">
-                        <div class="timeline-item">
-                            <div class="timeline-time">14h</div>
-                            <div class="timeline-content">
-                                <strong>Check-in à l’hôtel</strong>
-                                <p>Accueil des participants et installation.</p>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-time">19h00</div>
-                            <div class="timeline-content">
-                                <strong>Cocktail d’accueil</strong>
-                                <p>Moment d’échange et de networking dans une ambiance détendue.</p>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-time">19h30</div>
-                            <div class="timeline-content">
-                                <strong>From Case to Choice : HTA</strong>
-                                <p>Session assurée par <em>Dr Badr Ben Kaab</em>.</p>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-time">20h00</div>
-                            <div class="timeline-content">
-                                <strong>From Case to Choice : Diabète</strong>
-                                <p>Session assurée par <em>Dr Fatma Mnif</em>.</p>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-time">20h30</div>
-                            <div class="timeline-content">
-                                <strong>Dîner Gala</strong>
-                                <p>Animation par la star Mehdi Ayachi et la troupe Houriyet Tarab.</p>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-time">Minuit</div>
-                            <div class="timeline-content">
-                                <strong>Clôture de la journée</strong>
-                                <p>Fin de la 4ème édition de la Journée Cardio-Métabolique.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="speakers glass reveal">
-                    <span class="eyebrow">Intervenants</span>
-                    <h2>Temps forts</h2>
-                    <p>Les sessions médicales sont mises en avant dans des cartes propres et faciles à parcourir.</p>
-
-                    <div class="speaker-list">
-                        <article class="speaker-card">
-                            <span class="speaker-role">HTA</span>
-                            <strong>Dr Badr Ben Kaab</strong>
-                            <p>Professeur Agrégé en Néphrologie au service de Cardiologie à l’hôpital des Forces de Sécurité Intérieure, La Marsa.</p>
-                        </article>
-
-                        <article class="speaker-card">
-                            <span class="speaker-role">Diabète</span>
-                            <strong>Dr Fatma Mnif</strong>
-                            <p>Cheffe de service d’endocrinologie à l’hôpital militaire universitaire de Sfax et présidente de l’AEDS.</p>
-                        </article>
-
-                        <article class="speaker-card">
-                            <span class="speaker-role">Soirée</span>
-                            <strong>Mehdi Ayachi &amp; Houriyet Tarab</strong>
-                            <p>Une touche artistique et festive pour terminer l’événement dans une atmosphère plus marquante.</p>
-                        </article>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-card glass reveal">
-                <div>
-                    <span class="eyebrow">Partenaires</span>
-                    <h2>Marques mises en avant</h2>
-                    <p>Une présentation propre des partenaires, sans surcharge visuelle, tout en gardant l’identité de l’invitation.</p>
-                </div>
-
-                <div class="sponsor-row">
-                    <span>ARAVEN - IC</span>
-                    <span class="script">DuoFor</span>
-                    <span class="script">DuoFor Plus</span>
-                    <span>VILDA MET</span>
-                    <span>inovia</span>
-                </div>
-            </div>
-        </div>
-    </section>
+<div class="page-preloader" id="pagePreloader">
+    <div class="page-preloader__inner">
+        <div class="page-preloader__spinner"></div>
+        <span>Chargement de l’invitation</span>
+    </div>
 </div>
 
-<script type="module">
-    import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+<section class="hero">
+    <div class="hero__grid-lines"></div>
+    <div class="hero__overlay-blur hero__overlay-blur--one"></div>
+    <div class="hero__overlay-blur hero__overlay-blur--two"></div>
 
-    const canvas = document.getElementById('bg-canvas');
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.z = 14;
+    <div class="container">
+        <div class="hero__layout">
+            <div class="hero__content reveal reveal--left">
+                <span class="hero__eyebrow">Invitation officielle 2026</span>
 
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.8));
-    renderer.setSize(window.innerWidth, window.innerHeight);
+                <h1>Invitation</h1>
 
-    const pointsCount = 120;
-    const positions = new Float32Array(pointsCount * 3);
-    const scales = new Float32Array(pointsCount);
+                <p>
+                    Les Laboratoires PHILADELPHIA PHARMA ont le plaisir de vous inviter à la 5ème édition
+                    de leur Journée Cardio-métabolique de Cap-Bon.
+                </p>
 
-    for (let i = 0; i < pointsCount; i++) {
-        const i3 = i * 3;
-        positions[i3] = (Math.random() - 0.5) * 26;
-        positions[i3 + 1] = (Math.random() - 0.5) * 18;
-        positions[i3 + 2] = (Math.random() - 0.5) * 10;
-        scales[i] = Math.random();
-    }
+                <div class="hero__actions">
+                    <a href="#details" class="btn btn--primary">Découvrir l'événement</a>
+                    <a href="#register" class="btn btn--secondary">Confirmer ma présence</a>
+                </div>
+            </div>
 
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('aScale', new THREE.BufferAttribute(scales, 1));
+            <div class="hero__side reveal reveal--right">
+                <div class="orbit-glow orbit-glow--1"></div>
+                <div class="orbit-glow orbit-glow--2"></div>
 
-    const material = new THREE.PointsMaterial({
-        color: 0x6ed7ff,
-        size: 0.08,
-        transparent: true,
-        opacity: 0.7,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending,
-        sizeAttenuation: true
-    });
+                <div class="side-glow side-glow--one"></div>
+                <div class="side-glow side-glow--two"></div>
 
-    const points = new THREE.Points(geometry, material);
-    scene.add(points);
+                <div class="event-card" id="details">
+                    <div class="event-card__top">
+                        <div class="event-card__tag">Édition 2026</div>
+                        <div class="event-card__brand"><span>JCM</span>NORD OUEST</div>
+                        <div class="event-card__title">Invitation officielle</div>
+                    </div>
 
-    const glowGeometry = new THREE.PlaneGeometry(22, 22, 1, 1);
-    const glowMaterial = new THREE.MeshBasicMaterial({
-        color: 0x1aa8ec,
-        transparent: true,
-        opacity: 0.04,
-        depthWrite: false
-    });
-    const glow = new THREE.Mesh(glowGeometry, glowMaterial);
-    glow.position.z = -4;
-    scene.add(glow);
+                    <div class="event-card__body">
+                        <div class="info-block reveal reveal--up delay-1">
+                            <div class="info-block__label">Date</div>
+                            <div class="info-block__value">25 Avril 2026</div>
+                            <div class="info-block__sub">
+                                Une journée pensée pour réunir les professionnels dans un cadre soigné et mémorable.
+                            </div>
+                        </div>
 
-    const mouse = { x: 0, y: 0 };
-    const heroImage = document.getElementById('heroImage');
+                        <div class="info-block reveal reveal--up delay-2">
+                            <div class="info-block__label">Lieu</div>
+                            <div class="info-block__value">Hôtel La Forêt</div>
+                            <div class="info-block__sub">
+                                Aïn Draham · Accueil, échange, présentation et expérience premium.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero__sponsors reveal reveal--up delay-4">
+            <div class="hero__sponsors-label">Partenaires</div>
+
+            <div class="sponsors-marquee">
+                <div class="sponsors-marquee__track">
+                    <div class="sponsor-logo">NOVIA</div>
+                    <div class="sponsor-logo">VILDAMET</div>
+                    <div class="sponsor-logo">DUO FOR</div>
+                    <div class="sponsor-logo">ARAVEN-IC</div>
+                    <div class="sponsor-logo">NOVIA</div>
+                    <div class="sponsor-logo">VILDAMET</div>
+                    <div class="sponsor-logo">DUO FOR</div>
+                    <div class="sponsor-logo">ARAVEN-IC</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const hero = document.querySelector('.hero');
+    const content = document.querySelector('.hero__content');
+    const side = document.querySelector('.hero__side');
+    const preloader = document.getElementById('pagePreloader');
 
     window.addEventListener('mousemove', (e) => {
-        mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-        heroImage.style.transform = `translate3d(${mouse.x * 12}px, ${-mouse.y * 12}px, 0) scale(1.045)`;
+        const x = (e.clientX / window.innerWidth - 0.5) * 12;
+        const y = (e.clientY / window.innerHeight - 0.5) * 12;
+
+        if (content) {
+            content.style.transform = `translate3d(${x * -0.15}px, ${y * -0.15}px, 0)`;
+        }
+
+        if (side) {
+            side.style.transform = `translate3d(${x * 0.18}px, ${y * 0.18}px, 0)`;
+        }
+
+        if (hero) {
+            hero.style.backgroundPosition = `${50 + x * 0.1}% ${50 + y * 0.1}%`;
+        }
     });
 
-    function onResize() {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    }
+    window.addEventListener('load', () => {
+        document.body.classList.add('is-loaded');
 
-    window.addEventListener('resize', onResize);
-
-    const clock = new THREE.Clock();
-
-    function tick() {
-        const t = clock.getElapsedTime();
-        points.rotation.y = t * 0.03 + mouse.x * 0.08;
-        points.rotation.x = -mouse.y * 0.06;
-        points.position.x = mouse.x * 0.35;
-        points.position.y = mouse.y * 0.2;
-        glow.position.x = mouse.x * 1.2;
-        glow.position.y = mouse.y * 0.7;
-        renderer.render(scene, camera);
-        requestAnimationFrame(tick);
-    }
-
-    tick();
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) entry.target.classList.add('is-visible');
-        });
-    }, { threshold: 0.16 });
-
-    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+        setTimeout(() => {
+            preloader.classList.add('page-preloader--hidden');
+        }, 800);
+    });
 </script>
 </body>
 </html>
+
+
