@@ -646,6 +646,10 @@ body.hero-revealed .hero__logo img {
     pointer-events: none;
 }
 
+#event-card canvas {
+    opacity: 0.5;
+}
+
 .event-card__top {
     padding: 22px 24px 18px;
     background: linear-gradient(180deg, rgba(14, 50, 106, 0.88) 0%, rgba(14, 50, 106, 0.50) 100%);
