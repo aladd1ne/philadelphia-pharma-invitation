@@ -1,0 +1,8 @@
+{# Top bar for logged-in admin: user + logout #}
+<header class="admin-topbar">
+    <div class="admin-topbar__spacer"></div>
+    <div class="admin-topbar__actions">
+        <span class="admin-topbar__user" title="Compte connecté">{{ app.user.userIdentifier }}</span>
+        <a href="{{ logout_path('main') }}" class="admin-topbar__logout">Déconnexion</a>
+    </div>
+</header>

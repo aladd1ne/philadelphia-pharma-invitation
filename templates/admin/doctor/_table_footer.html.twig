@@ -1,0 +1,10 @@
+{% include 'admin/_components/export_footer.html.twig' with {
+    route_name: 'admin_doctors_index',
+    route_params: {},
+    page: doctor_page.page,
+    total_pages: doctor_page.totalPages,
+    query: doctor_page.search,
+    total_count: doctor_page.total,
+    export_route: 'admin_doctors_export',
+    export_label: 'Télécharger XLSX',
+} only %}

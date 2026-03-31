@@ -1,0 +1,20 @@
+{# Reusable admin sidebar. Expects: active (string): 'doctors' | 'dashboard' #}
+<aside class="admin-sidebar" aria-label="Navigation administration">
+    <div class="admin-sidebar__brand">
+        <a href="{{ path('admin_doctors_index') }}" class="admin-sidebar__brand-link">JCM</a>
+        <span class="admin-sidebar__brand-sub">Administration</span>
+    </div>
+    <nav class="admin-sidebar__nav">
+        <a href="{{ path('admin_doctors_index') }}"
+           class="admin-sidebar__link {{ active == 'doctors' ? 'is-active' : '' }}">
+            <span class="admin-sidebar__link-icon" aria-hidden="true">▣</span>
+            Inscriptions
+        </a>
+    </nav>
+    <div class="admin-sidebar__footer">
+        <p class="admin-sidebar__footer-label">Agence partenaire</p>
+        <a href="{{ path('admin_doctors_index') }}" class="admin-sidebar__agency" aria-label="Evenma — agence événementielle">
+            <img src="{{ asset('assets/images/logo evenma.png') }}" alt="Evenma" width="200" height="56" decoding="async" class="admin-sidebar__agency-logo">
+        </a>
+    </div>
+</aside>

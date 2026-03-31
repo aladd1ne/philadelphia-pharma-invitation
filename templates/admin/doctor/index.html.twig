@@ -1,0 +1,25 @@
+{% extends 'admin/base.html.twig' %}
+{% set active_nav = 'doctors' %}
+
+{% block title %}Inscriptions{% endblock %}
+
+{% block body %}
+    <div class="admin-page">
+        <div class="admin-page__head">
+            <div>
+                <h1 class="admin-page__title">Inscriptions médecins</h1>
+                <p class="admin-page__lead">Liste des inscriptions enregistrées. Utilisez la recherche pour filtrer par nom, coordonnées ou établissement.</p>
+            </div>
+        </div>
+
+        <section class="admin-toolbar" aria-label="Filtres">
+            {% include 'admin/doctor/_filters.html.twig' with { doctor_page: doctor_page } only %}
+        </section>
+
+        <section class="admin-data-section" aria-label="Liste des inscriptions">
+            {% include 'admin/doctor/_table.html.twig' with { doctor_page: doctor_page } only %}
+        </section>
+
+        {% include 'admin/doctor/_table_footer.html.twig' with { doctor_page: doctor_page } only %}
+    </div>
+{% endblock %}

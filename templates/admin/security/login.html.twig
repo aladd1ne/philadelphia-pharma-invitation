@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion — Administration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+</head>
+<body class="admin-body admin-body--login">
+    <div class="admin-login">
+        <div class="admin-login__card">
+            <div class="admin-login__brand">
+                <img src="{{ asset('assets/images/logo evenma.png') }}" alt="Evenma" width="160" height="44" decoding="async" class="admin-login__brand-logo">
+            </div>
+            <h1 class="admin-login__title">Administration</h1>
+            <p class="admin-login__lead">Accès réservé aux organisateurs.</p>
+
+            {% if error %}
+                <div class="admin-flash admin-flash--danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            <form method="post" action="{{ path('admin_login_check') }}" class="admin-form" autocomplete="on">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <label class="admin-field">
+                    <span class="admin-field__label">E-mail</span>
+                    <input type="email" name="_username" value="{{ last_username }}" required autofocus class="admin-input">
+                </label>
+
+                <label class="admin-field">
+                    <span class="admin-field__label">Mot de passe</span>
+                    <input type="password" name="_password" required class="admin-input" autocomplete="current-password">
+                </label>
+
+                <button type="submit" class="admin-btn admin-btn--primary">Se connecter</button>
+            </form>
+
+            <p class="admin-login__back"><a href="{{ path('home') }}">← Retour au site</a></p>
+        </div>
+    </div>
+</body>
+</html>

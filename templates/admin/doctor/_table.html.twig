@@ -1,0 +1,45 @@
+{# Registered doctors table — expects doctor_page (RegisteredDoctorPage) #}
+<div class="admin-table-wrap">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Date</th>
+                <th scope="col">Type</th>
+                <th scope="col">Nom / participants</th>
+                <th scope="col">Contact</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for d in doctor_page.items %}
+            <tr>
+                <td>{{ d.id }}</td>
+                <td>{{ d.createdAt ? d.createdAt|date('d/m/Y H:i') : '—' }}</td>
+                <td>{{ d.roomType == 'double' ? 'Double' : 'Simple' }}</td>
+                <td>{{ d.displayName }}</td>
+                <td>
+                    {% if d.roomType == 'single' %}
+                        {{ d.email }}<br><span class="admin-muted">{{ d.phone }}</span>
+                    {% else %}
+                        {{ d.participant1Email }} / {{ d.participant2Email }}
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('admin_doctors_edit', { id: d.id }) }}" class="admin-link">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6" class="admin-empty">
+                    {% if doctor_page.search %}
+                        Aucune inscription ne correspond à ce filtre.
+                    {% else %}
+                        Aucune inscription pour le moment.
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

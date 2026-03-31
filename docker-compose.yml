@@ -32,7 +32,7 @@ services:
     #    container_name: jcm-db
     environment:
       MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: jcm-server
+      MYSQL_DATABASE: jcm_server
       MYSQL_USER: jcm_user
       MYSQL_PASSWORD: jcm_password
     ports:

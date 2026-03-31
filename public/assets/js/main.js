@@ -3,7 +3,8 @@
     var content = document.querySelector('.hero__content');
     var side = document.querySelector('.hero__side');
     var heroGrid = document.querySelector('.hero__grid-lines');
-    var heroLogo = document.querySelector('.hero__logo');
+    var heroLogoClient = document.querySelector('.hero__logo--client');
+    var heroAgency = document.querySelector('.hero__agency');
     var scrollHint = document.querySelector('.scroll-hint');
     var programme = document.getElementById('programme');
     var programmeVanta = document.getElementById('programmeVanta');
@@ -95,13 +96,24 @@
             heroGrid.style.transform =
                 S > 0 ? 'translate3d(0,' + heroT * 0.38 * S + 'px,0)' : '';
         }
-        if (heroLogo) {
-            heroLogo.style.transform =
-                S > 0 ? 'translate3d(0,' + heroT * 0.15 * S + 'px,0)' : '';
+        var heroBrandShift = S > 0 ? 'translate3d(0,' + heroT * 0.15 * S + 'px,0)' : '';
+        if (heroLogoClient) {
+            heroLogoClient.style.transform = heroBrandShift;
+        }
+        if (heroAgency) {
+            heroAgency.style.transform = heroBrandShift;
         }
         if (scrollHint) {
-            scrollHint.style.transform =
-                S > 0 ? 'translate3d(-50%,' + heroT * 0.12 * S + 'px,0)' : '';
+            var narrowViewport = window.matchMedia('(max-width: 768px)').matches;
+            /* Mobile: keep transform from CSS (centered -50% X); inline would override reveal + break centering. */
+            if (narrowViewport) {
+                scrollHint.style.transform = '';
+            } else if (S > 0) {
+                scrollHint.style.transform =
+                    'translate3d(-50%,' + heroT * 0.12 * S + 'px,0)';
+            } else {
+                scrollHint.style.transform = '';
+            }
         }
 
         if (programmeVanta) {
@@ -320,15 +332,13 @@
         });
         syncRoomFields();
         registrationForm.addEventListener('submit', function (e) {
-            e.preventDefault();
+            syncRoomFields();
             if (!registrationForm.checkValidity()) {
+                e.preventDefault();
                 registrationForm.reportValidity();
                 return;
             }
-            registrationForm.reset();
-            syncRoomFields();
-            closeRegistrationSheet();
-            window.alert('Merci ! Votre demande d\'inscription a bien été enregistrée. Nous vous recontacterons prochainement.');
+            /* Native POST to action (home): server saves via RegisteredDoctorRegistrationService + redirect + flash */
         });
     }
 
@@ -409,12 +419,15 @@
         el: el,
         THREE: THREE,
         color1: 0x04101f,
-        color2: 0x0a2540,
+        color2: 0x153a47,
         size: 2.0,
         speed: 1.5,
         scale: 1.0,
         minHeight: 200,
-        minWidth: 200
+        minWidth: 200,
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
     });
 })();
 

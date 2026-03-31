@@ -1,0 +1,30 @@
+{# Spreadsheet-style footer strip: pagination + XLSX export. Params: route_name, route_params, page, total_pages, query, total_count, export_route, export_label #}
+<div class="admin-table-footer">
+    <div class="admin-table-footer__stats">
+        {% if total_count is defined %}
+            <span class="admin-table-footer__count">{{ total_count }} inscription{{ total_count > 1 ? 's' : '' }}</span>
+        {% endif %}
+    </div>
+    <div class="admin-table-footer__center">
+        {% include 'admin/_components/pagination.html.twig' with {
+            route_name: route_name,
+            route_params: route_params|default({}),
+            page: page,
+            total_pages: total_pages,
+            query: query|default(null),
+        } only %}
+    </div>
+    <div class="admin-table-footer__export">
+        <div class="admin-export-strip" role="group" aria-label="Export des données">
+            <span class="admin-export-strip__kbd" aria-hidden="true">⎘</span>
+            <span class="admin-export-strip__text">Tableur</span>
+            {% set export_params = {} %}
+            {% if query|default('') is not empty %}
+                {% set export_params = { q: query } %}
+            {% endif %}
+            <a href="{{ path(export_route, export_params) }}" class="admin-btn admin-btn--export admin-btn--compact">
+                {{ export_label|default('Télécharger XLSX') }}
+            </a>
+        </div>
+    </div>
+</div>

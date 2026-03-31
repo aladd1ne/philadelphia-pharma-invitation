@@ -12,6 +12,12 @@
 </head>
 <body>
 
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="site-flash site-flash--{{ label }}" role="status">{{ message }}</div>
+    {% endfor %}
+{% endfor %}
+
 <div class="custom-cursor" id="customCursor" aria-hidden="true">
     <div class="custom-cursor__ring"></div>
     <div class="custom-cursor__dot"></div>
@@ -32,8 +38,11 @@
 </div>
 
 <section class="hero" id="heroSection">
-    <div class="hero__logo">
-        <img src="{{ asset('assets/images/logo-white.png') }}" alt="Philadelphia Pharma">
+    <div class="hero__logo hero__logo--client">
+        <img src="{{ asset('assets/images/logo-white.png') }}" alt="Philadelphia Pharma" width="180" height="48" decoding="async">
+    </div>
+    <div class="hero__agency">
+        <img class="hero__agency-mark" src="{{ asset('assets/images/logo evenma.png') }}" alt="Evenma — agence événementielle" width="240" height="64" decoding="async">
     </div>
 
     <div class="hero__grid-lines"></div>
@@ -118,12 +127,21 @@
                             </div>#}
                         </div>
 
-                        <div class="info-block reveal reveal--up stagger-6">
+                        <div class="info-block info-block--venue reveal reveal--up stagger-6">
+                            <figure class="info-block__media">
+                                <img class="info-block__img"
+                                     src="{{ asset('assets/images/hotel-la-foret.jpg') }}"
+                                     alt="Hôtel La Forêt, Aïn Draham"
+                                     width="640"
+                                     height="400"
+                                     loading="lazy"
+                                     decoding="async">
+                            </figure>
                             <div class="info-block__label">Lieu</div>
                             <div class="info-block__value">Hôtel La Forêt</div>
-                      {#      <div class="info-block__sub">
-                                Aïn Draham · Accueil, échange, présentation et expérience premium.
-                            </div>#}
+                            <div class="info-block__sub">
+                                Aïn Draham
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -132,7 +150,7 @@
         </div>
     </div>
 
-    <div class="scroll-hint reveal reveal--up stagger-7">
+    <div class="scroll-hint reveal reveal--up stagger-7" aria-label="Défiler vers le bas">
         <svg width="24" height="38" viewBox="0 0 24 38" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="1" y="1" width="22" height="36" rx="11" stroke="currentColor" stroke-width="1.5"/>
             <circle class="scroll-hint__dot" cx="12" cy="10" r="2.5" fill="currentColor"/>
@@ -141,7 +159,51 @@
     </div>
 </section>
 
+{% set partner_logos = [
+    { file: 'inovia.png', alt: 'Inovia' },
+    { file: 'arvene.png', alt: 'Arvene' },
+    { file: 'duofor.png', alt: 'Duofor' },
+    { file: 'vildamet.png', alt: 'Vildamet' },
+    { file: 'inovia.png', alt: 'Inovia' },
+    { file: 'arvene.png', alt: 'Arvene' },
+    { file: 'duofor.png', alt: 'Duofor' },
+    { file: 'vildamet.png', alt: 'Vildamet' },
+] %}
+<section class="partners" id="partners" aria-labelledby="partners-heading">
+    <div class="container">
 
+    </div>
+    <div class="partners__viewport">
+        <div class="partners__track">
+            <ul class="partners__list" role="list">
+                {% for logo in partner_logos %}
+                <li class="partners__item">
+                    <img class="partners__logo"
+                         src="{{ asset('assets/images/partners/' ~ logo.file) }}"
+                         alt="{{ logo.alt }}"
+                         width="200"
+                         height="80"
+                         loading="lazy"
+                         decoding="async">
+                </li>
+                {% endfor %}
+            </ul>
+            <ul class="partners__list partners__list--clone" role="presentation" aria-hidden="true">
+                {% for logo in partner_logos %}
+                <li class="partners__item">
+                    <img class="partners__logo"
+                         src="{{ asset('assets/images/partners/' ~ logo.file) }}"
+                         alt=""
+                         width="200"
+                         height="80"
+                         loading="lazy"
+                         decoding="async">
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</section>
 
 <!-- Programme section -->
 <section class="programme programme--scroll-driven" id="programme">
@@ -293,7 +355,7 @@
 </section>
 
 <audio id="registrationThemeAudio" preload="auto" playsinline hidden>
-    <source src="{{ asset('assets/audio/audio-2.mp3') }}" type="audio/mpeg">
+    <source src="{{ asset('assets/audio/sanaa.mp3') }}" type="audio/mpeg">
 </audio>
 
 <div class="registration-sheet" id="registrationSheet" role="dialog" aria-modal="true" aria-labelledby="registrationSheetTitle" aria-hidden="true">
@@ -305,14 +367,14 @@
 
         <div class="registration-sheet__inner">
             <div class="registration-sheet__sound-hint">
-                <div class="audio-viz" id="registrationAudioViz" role="img" aria-label="Musique d'ambiance en lecture">
+                <div class="audio-viz" id="registrationAudioViz" role="img" aria-label="En lecture : Mehdi Ayachi — Weld 3rab">
                     <span class="audio-viz__bar"></span>
                     <span class="audio-viz__bar"></span>
                     <span class="audio-viz__bar"></span>
                     <span class="audio-viz__bar"></span>
                     <span class="audio-viz__bar"></span>
                 </div>
-                <span class="registration-sheet__sound-caption">Son actif</span>
+                <span class="registration-sheet__sound-caption">En lecture : Sanna - Mehdi Ayachi</span>
             </div>
             <span class="registration-sheet__eyebrow">Inscription</span>
             <h2 class="registration-sheet__title" id="registrationSheetTitle">Confirmer votre présence</h2>
@@ -320,7 +382,8 @@
                 Choisissez votre formule d'hébergement puis complétez les informations demandées.
             </p>
 
-            <form class="registration-form" id="registrationForm" action="#" method="post">
+            <form class="registration-form" id="registrationForm" method="post" action="{{ path('home') }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('registration') }}">
                 <fieldset class="registration-form__room">
                     <legend class="registration-form__legend">Type d'hébergement</legend>
                     <div class="registration-form__room-grid">
@@ -343,19 +406,19 @@
                         <div class="registration-form__grid">
                             <label class="registration-form__field">
                                 <span class="registration-form__label">Prénom <abbr title="obligatoire">*</abbr></span>
-                                <input type="text" name="first_name" autocomplete="given-name" required>
+                                <input type="text" name="first_name" autocomplete="given-name">
                             </label>
                             <label class="registration-form__field">
                                 <span class="registration-form__label">Nom <abbr title="obligatoire">*</abbr></span>
-                                <input type="text" name="last_name" autocomplete="family-name" required>
+                                <input type="text" name="last_name" autocomplete="family-name">
                             </label>
                             <label class="registration-form__field registration-form__field--full">
                                 <span class="registration-form__label">E-mail professionnel <abbr title="obligatoire">*</abbr></span>
-                                <input type="email" name="email" autocomplete="email" required>
+                                <input type="email" name="email" autocomplete="email">
                             </label>
                             <label class="registration-form__field">
                                 <span class="registration-form__label">Téléphone <abbr title="obligatoire">*</abbr></span>
-                                <input type="tel" name="phone" autocomplete="tel" required>
+                                <input type="tel" name="phone" autocomplete="tel">
                             </label>
                             <label class="registration-form__field">
                                 <span class="registration-form__label">Établissement / Service</span>

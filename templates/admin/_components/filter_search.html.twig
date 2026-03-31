@@ -1,0 +1,17 @@
+{# GET search form. Params: route_name, route_params, field_name, value, placeholder #}
+<form method="get" action="{{ path(route_name, route_params|default({})) }}" class="admin-filter-bar" role="search">
+    <label class="admin-filter-bar__label" for="admin-filter-q">{{ placeholder|default('Rechercher') }}</label>
+    <div class="admin-filter-bar__row">
+        <input type="search"
+               id="admin-filter-q"
+               name="{{ field_name|default('q') }}"
+               value="{{ value|default('') }}"
+               placeholder="{{ placeholder|default('Nom, e-mail, téléphone, établissement…') }}"
+               class="admin-input admin-input--filter"
+               autocomplete="off">
+        <button type="submit" class="admin-btn admin-btn--secondary admin-btn--compact">Rechercher</button>
+        {% if value|default('') is not empty %}
+            <a href="{{ path(route_name, route_params|default({})) }}" class="admin-btn admin-btn--ghost admin-btn--compact">Effacer</a>
+        {% endif %}
+    </div>
+</form>

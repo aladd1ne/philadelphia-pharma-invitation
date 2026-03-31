@@ -1,0 +1,26 @@
+{# Params: route_name, route_params, page, total_pages, query (optional search string) #}
+{% set q = query|default(null) %}
+{% set base = route_params|default({}) %}
+{% if total_pages > 1 %}
+<nav class="admin-pagination" aria-label="Pagination">
+    {% set prev_params = base|merge({ page: page - 1 }) %}
+    {% if q is not null and q != '' %}
+        {% set prev_params = prev_params|merge({ q: q }) %}
+    {% endif %}
+    {% set next_params = base|merge({ page: page + 1 }) %}
+    {% if q is not null and q != '' %}
+        {% set next_params = next_params|merge({ q: q }) %}
+    {% endif %}
+    {% if page > 1 %}
+        <a href="{{ path(route_name, prev_params) }}" class="admin-pagination__link">← Précédent</a>
+    {% else %}
+        <span class="admin-pagination__link admin-pagination__link--disabled" aria-disabled="true">← Précédent</span>
+    {% endif %}
+    <span class="admin-pagination__meta">Page <strong>{{ page }}</strong> sur <strong>{{ total_pages }}</strong></span>
+    {% if page < total_pages %}
+        <a href="{{ path(route_name, next_params) }}" class="admin-pagination__link">Suivant →</a>
+    {% else %}
+        <span class="admin-pagination__link admin-pagination__link--disabled" aria-disabled="true">Suivant →</span>
+    {% endif %}
+</nav>
+{% endif %}

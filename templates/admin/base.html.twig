@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Administration{% endblock %} — JCM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+</head>
+<body class="admin-body">
+    <div class="admin-shell">
+        {% include 'admin/_components/sidebar.html.twig' with { active: active_nav|default('') } %}
+        <div class="admin-shell__main">
+            {% include 'admin/_components/topbar.html.twig' %}
+            <div class="admin-shell__content">
+                {% include 'admin/_components/flash_messages.html.twig' %}
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -3,8 +3,8 @@
   <text x="56" y="68" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="system-ui,sans-serif" font-size="28" font-weight="700">FM</text>
   <defs>
     <linearGradient id="g2" x1="112" y1="0" x2="0" y2="112" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#0a2540"/>
-      <stop offset="1" stop-color="#67cfff" stop-opacity="0.35"/>
+      <stop stop-color="#153a47"/>
+      <stop offset="1" stop-color="#a8e8fc" stop-opacity="0.35"/>
     </linearGradient>
   </defs>
 </svg>

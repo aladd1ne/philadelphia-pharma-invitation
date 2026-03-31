@@ -3,8 +3,8 @@
   <text x="56" y="68" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="system-ui,sans-serif" font-size="28" font-weight="700">BBK</text>
   <defs>
     <linearGradient id="g" x1="0" y1="0" x2="112" y2="112" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#0a2540"/>
-      <stop offset="1" stop-color="#14a6f4" stop-opacity="0.35"/>
+      <stop stop-color="#153a47"/>
+      <stop offset="1" stop-color="#39c3f9" stop-opacity="0.35"/>
     </linearGradient>
   </defs>
 </svg>

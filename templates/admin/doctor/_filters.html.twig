@@ -1,0 +1,7 @@
+{% include 'admin/_components/filter_search.html.twig' with {
+    route_name: 'admin_doctors_index',
+    route_params: {},
+    field_name: 'q',
+    value: doctor_page.search|default(''),
+    placeholder: 'Rechercher par nom, e-mail, téléphone, établissement…',
+} only %}
