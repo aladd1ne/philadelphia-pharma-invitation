@@ -62,7 +62,7 @@ final class CreateAdminUserCommand extends Command
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        $io->success('Admin user created: '.$email);
+        $io->success('Admin user created: ' . $email);
 
         return Command::SUCCESS;
     }

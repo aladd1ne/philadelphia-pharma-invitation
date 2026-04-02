@@ -1,5 +1,7 @@
 twig:
     file_name_pattern: '*.twig'
+    globals:
+        performance_youtube_id: '%env(default:default_performance_youtube_id:PERFORMANCE_YOUTUBE_ID)%'
 
 when@test:
     twig:
