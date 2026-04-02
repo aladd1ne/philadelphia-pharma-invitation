@@ -26,7 +26,7 @@ final class RegisteredDoctorListApiController extends AbstractController
     {
         $q = $request->query->get('q');
         $search = trim((string) ($q ?? ''));
-        $search = $search === '' ? null : $search;
+        $search = '' === $search ? null : $search;
 
         $page = max(1, (int) $request->query->get('page', 1));
         $perPage = min(100, max(1, (int) $request->query->get('per_page', 15)));

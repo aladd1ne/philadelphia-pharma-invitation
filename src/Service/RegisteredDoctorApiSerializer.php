@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\RegisteredDoctor;
+use DateTimeInterface;
 
 final class RegisteredDoctorApiSerializer
 {
@@ -32,8 +33,8 @@ final class RegisteredDoctorApiSerializer
             'sharedInstitution' => $doctor->getSharedInstitution(),
             'sharedNotes' => $doctor->getSharedNotes(),
             'displayName' => $doctor->getDisplayName(),
-            'createdAt' => $doctor->getCreatedAt()?->format(\DateTimeInterface::ATOM),
-            'updatedAt' => $doctor->getUpdatedAt()?->format(\DateTimeInterface::ATOM),
+            'createdAt' => $doctor->getCreatedAt()?->format(DateTimeInterface::ATOM),
+            'updatedAt' => $doctor->getUpdatedAt()?->format(DateTimeInterface::ATOM),
         ];
     }
 

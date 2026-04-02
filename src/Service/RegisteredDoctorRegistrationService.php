@@ -21,6 +21,7 @@ final class RegisteredDoctorRegistrationService
     public function registerFromPayload(array $payload): RegisteredDoctor
     {
         $roomType = isset($payload['room_type']) ? trim((string) $payload['room_type']) : '';
+
         if (!\in_array($roomType, [RegisteredDoctor::ROOM_SINGLE, RegisteredDoctor::ROOM_DOUBLE], true)) {
             throw new BadRequestHttpException('Invalid room_type.');
         }
@@ -59,9 +60,11 @@ final class RegisteredDoctorRegistrationService
     private function requireString(array $payload, string $key, int $maxLen): string
     {
         $v = isset($payload[$key]) ? trim((string) $payload[$key]) : '';
+
         if ('' === $v) {
             throw new BadRequestHttpException(sprintf('Le champ « %s » est obligatoire.', $key));
         }
+
         if (\strlen($v) > $maxLen) {
             throw new BadRequestHttpException(sprintf('Le champ « %s » est trop long.', $key));
         }
@@ -75,6 +78,7 @@ final class RegisteredDoctorRegistrationService
     private function requireEmail(array $payload, string $key): string
     {
         $v = $this->requireString($payload, $key, 180);
+
         if (!filter_var($v, \FILTER_VALIDATE_EMAIL)) {
             throw new BadRequestHttpException(sprintf('E-mail invalide pour « %s ».', $key));
         }
@@ -88,9 +92,11 @@ final class RegisteredDoctorRegistrationService
     private function optionalString(array $payload, string $key, int $maxLen): ?string
     {
         $v = isset($payload[$key]) ? trim((string) $payload[$key]) : '';
+
         if ('' === $v) {
             return null;
         }
+
         if (\strlen($v) > $maxLen) {
             throw new BadRequestHttpException(sprintf('Le champ « %s » est trop long.', $key));
         }

@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Entity\RegisteredDoctor;
 use App\Repository\RegisteredDoctorRepository;
+use DateTimeImmutable;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
@@ -31,12 +32,12 @@ final class RegisteredDoctorExporter
             $writer = new Xlsx($spreadsheet);
             $writer->save('php://output');
         });
-        $suffix = (new \DateTimeImmutable())->format('Y-m-d_His');
-        $filename = $search !== null
-            ? 'inscriptions-medecins-filtre-'.$suffix.'.xlsx'
-            : 'inscriptions-medecins-'.$suffix.'.xlsx';
+        $suffix = (new DateTimeImmutable())->format('Y-m-d_His');
+        $filename = null !== $search
+            ? 'inscriptions-medecins-filtre-' . $suffix . '.xlsx'
+            : 'inscriptions-medecins-' . $suffix . '.xlsx';
         $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        $response->headers->set('Content-Disposition', 'attachment; filename="'.$filename.'"');
+        $response->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '"');
         $response->headers->set('Cache-Control', 'max-age=0');
 
         return $response;
@@ -73,13 +74,14 @@ final class RegisteredDoctorExporter
         ];
 
         $colCount = \count($headers);
+
         for ($i = 0; $i < $colCount; ++$i) {
-            $cell = Coordinate::stringFromColumnIndex($i + 1).'1';
+            $cell = Coordinate::stringFromColumnIndex($i + 1) . '1';
             $active->setCellValue($cell, $headers[$i]);
         }
 
         $lastColLetter = Coordinate::stringFromColumnIndex($colCount);
-        $headerRange = 'A1:'.$lastColLetter.'1';
+        $headerRange = 'A1:' . $lastColLetter . '1';
         $active->getStyle($headerRange)->getFont()->setBold(true);
         $active->getStyle($headerRange)->getFill()
             ->setFillType(Fill::FILL_SOLID)
@@ -92,6 +94,7 @@ final class RegisteredDoctorExporter
             ->getColor()->setRGB('39C3F9');
 
         $row = 2;
+
         foreach ($doctors as $d) {
             $values = [
                 $d->getId(),
@@ -113,16 +116,18 @@ final class RegisteredDoctorExporter
                 $d->getSharedInstitution(),
                 $d->getSharedNotes(),
             ];
+
             for ($i = 0; $i < $colCount; ++$i) {
-                $cell = Coordinate::stringFromColumnIndex($i + 1).$row;
+                $cell = Coordinate::stringFromColumnIndex($i + 1) . $row;
                 $active->setCellValue($cell, $values[$i]);
             }
             ++$row;
         }
 
         $dataLastRow = max(1, $row - 1);
+
         if ($dataLastRow >= 2) {
-            $active->getStyle('A2:'.$lastColLetter.$dataLastRow)->getBorders()->getAllBorders()
+            $active->getStyle('A2:' . $lastColLetter . $dataLastRow)->getBorders()->getAllBorders()
                 ->setBorderStyle(Border::BORDER_THIN)
                 ->getColor()->setRGB('D0D7DE');
         }

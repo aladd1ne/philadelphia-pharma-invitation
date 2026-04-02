@@ -27,6 +27,7 @@ final class IndexController extends AbstractController
         if ($request->isMethod('POST')) {
             $data = $request->request->all();
             $token = (string) ($data['_token'] ?? '');
+
             if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('registration', $token))) {
                 $this->addFlash('danger', 'Jeton CSRF invalide. Veuillez recharger la page et réessayer.');
 
@@ -40,7 +41,7 @@ final class IndexController extends AbstractController
             } catch (BadRequestHttpException $e) {
                 $this->addFlash('danger', $e->getMessage());
 
-                return $this->redirect($this->generateUrl('home').'#register');
+                return $this->redirect($this->generateUrl('home') . '#register');
             }
 
             $request->getSession()->set(RegistrationConfirmationController::SESSION_FLAG, true);

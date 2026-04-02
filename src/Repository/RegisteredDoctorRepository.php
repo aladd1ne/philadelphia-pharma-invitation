@@ -72,8 +72,9 @@ class RegisteredDoctorRepository extends ServiceEntityRepository
 
     private function applySearch(QueryBuilder $qb, ?string $search): void
     {
-        $search = $search !== null ? trim($search) : '';
-        if ($search === '') {
+        $search = null !== $search ? trim($search) : '';
+
+        if ('' === $search) {
             return;
         }
 
