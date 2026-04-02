@@ -153,6 +153,11 @@
                 document.body.classList.add('hero-revealed');
             }, 250);
         }, 1100);
+
+        startCountdown();
+        if (typeof AOS !== 'undefined' && AOS.refresh) {
+            AOS.refresh();
+        }
     });
 
     var registrationSheet = document.getElementById('registrationSheet');
@@ -169,6 +174,56 @@
     var registrationFreqData = null;
     var registrationVizRaf = null;
     var registrationAudioGraphReady = false;
+
+    var performanceVideoModal = document.getElementById('performanceVideoModal');
+    var performanceVideoEmbed = document.getElementById('performanceVideoEmbed');
+    var performanceVideoOpen = document.getElementById('performanceVideoOpen');
+    var performanceVideoClose = document.getElementById('performanceVideoClose');
+
+    function closePerformanceVideoModal() {
+        if (!performanceVideoModal) return;
+        performanceVideoModal.classList.remove('is-open');
+        performanceVideoModal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('video-modal--open');
+        if (performanceVideoEmbed) {
+            performanceVideoEmbed.innerHTML = '';
+        }
+        if (performanceVideoOpen) {
+            performanceVideoOpen.focus();
+        }
+    }
+
+    function openPerformanceVideoModal() {
+        if (!performanceVideoModal || !performanceVideoEmbed || !performanceVideoOpen) return;
+        var rawId = performanceVideoOpen.getAttribute('data-youtube-id') || '';
+        var id = rawId.replace(/[^a-zA-Z0-9_-]/g, '');
+        if (id.length < 6) return;
+        /* Empty embed first so the overlay can paint before the heavy YouTube iframe loads. */
+        performanceVideoEmbed.innerHTML = '';
+        performanceVideoModal.classList.add('is-open');
+        performanceVideoModal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('video-modal--open');
+        if (performanceVideoClose) {
+            performanceVideoClose.focus();
+        }
+        var src =
+            'https://www.youtube-nocookie.com/embed/' + id +
+            '?autoplay=1&rel=0&modestbranding=1&playsinline=1';
+        function injectIframe() {
+            if (!performanceVideoModal || !performanceVideoModal.classList.contains('is-open')) {
+                return;
+            }
+            performanceVideoEmbed.innerHTML =
+                '<iframe class="video-modal__iframe" title="Performance — Mehdi Ayachi" ' +
+                'src="' + src + '" ' +
+                'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ' +
+                'allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>';
+        }
+        /* Double rAF: wait for layout + paint of the modal before loading the iframe. */
+        requestAnimationFrame(function () {
+            requestAnimationFrame(injectIframe);
+        });
+    }
 
     function resetRegistrationVizBars() {
         if (!registrationAudioViz) return;
@@ -273,6 +328,7 @@
 
     function openRegistrationSheet() {
         if (!registrationSheet) return;
+        closePerformanceVideoModal();
         registrationSheet.classList.add('is-open');
         registrationSheet.setAttribute('aria-hidden', 'false');
         document.body.classList.add('registration-sheet--open');
@@ -280,6 +336,7 @@
             registrationClose.focus();
         }
         if (registrationAudio) {
+            registrationAudio.load();
             registrationAudio.currentTime = 0;
             var p = registrationAudio.play();
             var onPlaying = function () {
@@ -349,10 +406,33 @@
         registrationClose.addEventListener('click', closeRegistrationSheet);
     }
     document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && registrationSheet && registrationSheet.classList.contains('is-open')) {
+        if (e.key !== 'Escape') return;
+        if (registrationSheet && registrationSheet.classList.contains('is-open')) {
             closeRegistrationSheet();
+            return;
+        }
+        if (performanceVideoModal && performanceVideoModal.classList.contains('is-open')) {
+            closePerformanceVideoModal();
         }
     });
+
+    if (performanceVideoOpen) {
+        performanceVideoOpen.addEventListener('click', function (e) {
+            e.preventDefault();
+            openPerformanceVideoModal();
+        });
+    }
+    if (performanceVideoClose) {
+        performanceVideoClose.addEventListener('click', closePerformanceVideoModal);
+    }
+    if (performanceVideoModal) {
+        performanceVideoModal.addEventListener('click', function (e) {
+            var t = e.target;
+            if (t && t.getAttribute && t.getAttribute('data-video-modal-close') !== null) {
+                closePerformanceVideoModal();
+            }
+        });
+    }
 
     document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
         anchor.addEventListener('click', function (e) {
@@ -408,27 +488,86 @@
         update();
         setInterval(update, 1000);
     }
-
-    window.addEventListener('load', startCountdown);
 })();
 
+/**
+ * Vanta (programme background only): Three.js + vanta.cells — not on event card.
+ */
 (function () {
-    var el = document.getElementById('programmeVanta');
-    if (!el || typeof VANTA === 'undefined' || typeof THREE === 'undefined') return;
-    VANTA.CELLS({
-        el: el,
-        THREE: THREE,
-        color1: 0x04101f,
-        color2: 0x153a47,
-        size: 2.0,
-        speed: 1.5,
-        scale: 1.0,
-        minHeight: 200,
-        minWidth: 200,
-        mouseControls: true,
-        touchControls: true,
-        gyroControls: false,
-    });
+    function loadScript(src) {
+        return new Promise(function (resolve, reject) {
+            var s = document.createElement('script');
+            s.src = src;
+            s.async = false;
+            s.onload = function () {
+                resolve();
+            };
+            s.onerror = function () {
+                reject(new Error(src));
+            };
+            document.body.appendChild(s);
+        });
+    }
+
+    function initProgrammeVanta() {
+        if (typeof VANTA === 'undefined' || typeof THREE === 'undefined') {
+            return;
+        }
+        var programmeEl = document.getElementById('programmeVanta');
+        if (!programmeEl) {
+            return;
+        }
+        VANTA.CELLS({
+            el: programmeEl,
+            THREE: THREE,
+            color1: 0x04101f,
+            color2: 0x153a47,
+            size: 2.0,
+            speed: 1.5,
+            scale: 1.0,
+            minHeight: 200,
+            minWidth: 200,
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+        });
+    }
+
+    function loadVantaProgramme() {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            return;
+        }
+        var threeUrl = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js';
+        var cellsUrl = 'https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.cells.min.js';
+        loadScript(threeUrl)
+            .then(function () {
+                return loadScript(cellsUrl);
+            })
+            .then(initProgrammeVanta)
+            .catch(function () {});
+    }
+
+    function scheduleVanta() {
+        function run() {
+            if ('requestIdleCallback' in window) {
+                window.requestIdleCallback(
+                    function () {
+                        loadVantaProgramme();
+                    },
+                    { timeout: 2400 }
+                );
+            } else {
+                window.setTimeout(loadVantaProgramme, 0);
+            }
+        }
+        if (document.readyState === 'complete') {
+            run();
+        } else {
+            window.addEventListener('load', run);
+        }
+    }
+
+    scheduleVanta();
 })();
 
 (function () {
@@ -439,15 +578,10 @@
     AOS.init({
         duration: 700,
         easing: 'ease-out-cubic',
-        once: false,
-        mirror: true,
+        once: true,
+        mirror: false,
         offset: 72,
         anchorPlacement: 'top-bottom',
         disable: reducedMotion
-    });
-    window.addEventListener('load', function () {
-        if (typeof AOS !== 'undefined' && AOS.refresh) {
-            AOS.refresh();
-        }
     });
 })();
