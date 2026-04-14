@@ -20,13 +20,14 @@ final class RegistrationConfirmationController extends AbstractController
     public function confirmation(Request $request): Response
     {
         $session = $request->getSession();
+
         if (true !== $session->get(self::SESSION_FLAG)) {
             return $this->redirectToRoute('home');
         }
         $session->remove(self::SESSION_FLAG);
 
         $projectDir = (string) $this->getParameter('kernel.project_dir');
-        $pdfPath = $projectDir.'/public/assets/docs/programme.pdf';
+        $pdfPath = $projectDir . '/public/assets/docs/programme.pdf';
 
         return $this->render('registration/confirmation.html.twig', [
             'programPdfAvailable' => is_readable($pdfPath),
@@ -37,7 +38,7 @@ final class RegistrationConfirmationController extends AbstractController
     public function downloadProgramme(): Response
     {
         $projectDir = (string) $this->getParameter('kernel.project_dir');
-        $path = $projectDir.'/public/assets/docs/programme.pdf';
+        $path = $projectDir . '/public/assets/docs/programme.pdf';
 
         if (!is_readable($path)) {
             throw new NotFoundHttpException('Le fichier programme n\'est pas disponible pour le moment.');

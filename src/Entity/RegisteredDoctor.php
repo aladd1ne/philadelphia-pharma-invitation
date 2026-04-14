@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\RegisteredDoctorRepository;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -13,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class RegisteredDoctor
 {
     public const ROOM_SINGLE = 'single';
+
     public const ROOM_DOUBLE = 'double';
 
     #[ORM\Id]
@@ -72,10 +74,10 @@ class RegisteredDoctor
     private ?string $sharedNotes = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private ?\DateTimeImmutable $updatedAt = null;
+    private ?DateTimeImmutable $updatedAt = null;
 
     public function getId(): ?int
     {
@@ -274,24 +276,24 @@ class RegisteredDoctor
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?DateTimeImmutable
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
+    public function setUpdatedAt(DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
 
@@ -301,7 +303,7 @@ class RegisteredDoctor
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $this->createdAt = $now;
         $this->updatedAt = $now;
     }
@@ -309,19 +311,19 @@ class RegisteredDoctor
     #[ORM\PreUpdate]
     public function onPreUpdate(): void
     {
-        $this->updatedAt = new \DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
     }
 
     /** Display label for list (primary contact name or P1 + P2). */
     public function getDisplayName(): string
     {
         if (self::ROOM_DOUBLE === $this->roomType) {
-            $a = trim(($this->participant1FirstName ?? '').' '.($this->participant1LastName ?? ''));
-            $b = trim(($this->participant2FirstName ?? '').' '.($this->participant2LastName ?? ''));
+            $a = trim(($this->participant1FirstName ?? '') . ' ' . ($this->participant1LastName ?? ''));
+            $b = trim(($this->participant2FirstName ?? '') . ' ' . ($this->participant2LastName ?? ''));
 
-            return trim($a.' & '.$b) ?: '—';
+            return trim($a . ' & ' . $b) ?: '—';
         }
 
-        return trim(($this->firstName ?? '').' '.($this->lastName ?? '')) ?: '—';
+        return trim(($this->firstName ?? '') . ' ' . ($this->lastName ?? '')) ?: '—';
     }
 }

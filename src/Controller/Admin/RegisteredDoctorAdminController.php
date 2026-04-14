@@ -32,7 +32,7 @@ final class RegisteredDoctorAdminController extends AbstractController
     {
         $q = $request->query->get('q');
         $search = trim((string) ($q ?? ''));
-        $search = $search === '' ? null : $search;
+        $search = '' === $search ? null : $search;
 
         $page = max(1, (int) $request->query->get('page', 1));
         $result = $this->repository->searchPaginated($search, $page, self::PER_PAGE);
@@ -74,7 +74,7 @@ final class RegisteredDoctorAdminController extends AbstractController
     {
         $q = $request->query->get('q');
         $search = trim((string) ($q ?? ''));
-        $search = $search === '' ? null : $search;
+        $search = '' === $search ? null : $search;
 
         return $this->exporter->createStreamedResponse($search);
     }
